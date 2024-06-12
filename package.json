@@ -1,6 +1,6 @@
 {
   "name": "tooltip-tour",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A JavaScript library that guides users through a web page with a flying tooltip. The tooltip provides step-by-step information about each section of the page, moving smoothly to the next section for a seamless and informative user experience.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
