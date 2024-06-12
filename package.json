@@ -1,0 +1,44 @@
+{
+  "name": "tooltip-tour",
+  "version": "1.0.0",
+  "description": "A JavaScript library that guides users through a web page with a flying tooltip. The tooltip provides step-by-step information about each section of the page, moving smoothly to the next section for a seamless and informative user experience.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "release": "npm run build && changeset publish",
+    "lint": "tsc"
+  },
+  "keywords": [
+    "tooltip",
+    "tour",
+    "guide",
+    "step-by-step",
+    "flying-tooltip",
+    "user-guide",
+    "onboarding",
+    "web-tour",
+    "interactive-guide",
+    "website-tour",
+    "walkthrough"
+  ],
+  "author": "Or Jerby",
+  "license": "MIT",
+  "repository": "github:orjerby/tooltip-tour",
+  "files": [
+    "/dist"
+  ],
+  "devDependencies": {
+    "@changesets/cli": "^2.27.5",
+    "tsup": "^8.1.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "focus-trap": "^7.5.4"
+  }
+}
