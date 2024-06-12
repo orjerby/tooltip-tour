@@ -1,0 +1,5 @@
+---
+"tooltip-tour": patch
+---
+
+fix
