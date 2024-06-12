@@ -1,17 +1,20 @@
 import * as focusTrap from "focus-trap";
-import { GuideOptions, GuideStep } from ".";
-import { GuideMeElement } from "./GuideMeElement";
+import { TooltipTourOptions, TooltipTourStep } from ".";
+import { TooltipTourElement } from "./TooltipTourElement";
 
-export class GuideMe {
-  private guideMe: GuideMeElement | null | undefined;
+export class TooltipTour {
+  private tooltipTourElement: TooltipTourElement | null | undefined;
   private trap: focusTrap.FocusTrap | null | undefined;
   private currentElementIndex = -1;
 
-  constructor(private elements: GuideStep[], private options?: GuideOptions) {
+  constructor(
+    private elements: TooltipTourStep[],
+    private options?: TooltipTourOptions
+  ) {
     this.initialize();
   }
 
-  update(elements: GuideStep[], options?: GuideOptions) {
+  update(elements: TooltipTourStep[], options?: TooltipTourOptions) {
     this.elements = elements;
     this.options = options;
     this.currentElementIndex = -1;
@@ -30,14 +33,14 @@ export class GuideMe {
   }
 
   hide() {
-    if (!this.guideMe) {
-      throw new Error("There is no GuideMeElement");
+    if (!this.tooltipTourElement) {
+      throw new Error("There is no TooltipTourElement");
     }
 
-    this.guideMe.hideTooltip();
+    this.tooltipTourElement.hideTooltip();
 
     if (!this.options?.disableOverlay) {
-      this.guideMe.hideOverlay();
+      this.tooltipTourElement.hideOverlay();
     }
 
     if (!this.options?.disableFocusTrap) {
@@ -52,13 +55,13 @@ export class GuideMe {
   }
 
   destroy() {
-    if (!this.guideMe) {
-      throw new Error("There is no GuideMeElement");
+    if (!this.tooltipTourElement) {
+      throw new Error("There is no TooltipTourElement");
     }
 
     this.hide();
-    this.guideMe.destroy();
-    this.guideMe = null;
+    this.tooltipTourElement.destroy();
+    this.tooltipTourElement = null;
     this.currentElementIndex = -1;
   }
 
@@ -70,45 +73,45 @@ export class GuideMe {
   }
 
   private initialize() {
-    const guideMeElement = document.querySelector(
-      "guide-me-element"
-    ) as GuideMeElement;
+    const tooltipTourElement = document.querySelector(
+      "tooltip-tour-element"
+    ) as TooltipTourElement;
 
-    if (guideMeElement) {
-      this.guideMe = guideMeElement;
+    if (tooltipTourElement) {
+      this.tooltipTourElement = tooltipTourElement;
     } else {
-      this.guideMe = document.createElement(
-        "guide-me-element"
-      ) as GuideMeElement;
-      document.body.appendChild(this.guideMe);
+      this.tooltipTourElement = document.createElement(
+        "tooltip-tour-element"
+      ) as TooltipTourElement;
+      document.body.appendChild(this.tooltipTourElement);
     }
   }
 
   private move() {
-    if (!this.guideMe) {
-      throw new Error("There is no GuideMeElement");
+    if (!this.tooltipTourElement) {
+      throw new Error("There is no TooltipTourElement");
     }
 
     const item = this.elements[this.currentElementIndex];
 
     if (!item) {
-      this.guideMe.hideTooltip();
+      this.tooltipTourElement.hideTooltip();
 
       if (!this.options?.disableFocusTrap) {
         this.destroyFocusTrap();
       }
 
       if (!this.options?.disableOverlay) {
-        this.guideMe.hideOverlay();
+        this.tooltipTourElement.hideOverlay();
       }
       return;
     }
 
-    this.guideMe.setTooltipContent(item.tooltip);
-    this.guideMe.showTooltip(item.element);
+    this.tooltipTourElement.setTooltipContent(item.tooltip);
+    this.tooltipTourElement.showTooltip(item.element);
 
     if (!this.options?.disableOverlay) {
-      this.guideMe.showOverlay();
+      this.tooltipTourElement.showOverlay();
     }
 
     if (!this.options?.disableFocusTrap) {
@@ -118,7 +121,7 @@ export class GuideMe {
       }
 
       this.trap = focusTrap.createFocusTrap(
-        [this.guideMe.tooltip, item.element],
+        [this.tooltipTourElement.tooltip, item.element],
         {
           fallbackFocus: item.element,
         }
@@ -135,7 +138,7 @@ export class GuideMe {
       item.element.scrollIntoView({ behavior: "smooth" });
     }
 
-    const shadowRoot = this.guideMe.shadowRoot;
+    const shadowRoot = this.tooltipTourElement.shadowRoot;
     const prevButton = shadowRoot?.querySelector("[slot=prev]");
     const nextButton = shadowRoot?.querySelector("[slot=next]");
     const skipButton = shadowRoot?.querySelector("[slot=skip]");
@@ -154,7 +157,7 @@ export class GuideMe {
   }
 
   private setHighlight(element: HTMLElement) {
-    element.classList.add("gm-highlight");
+    element.classList.add("tt-highlight");
     element.style.zIndex = "10000";
 
     if (
@@ -168,8 +171,8 @@ export class GuideMe {
   }
 
   private unsetHighlights() {
-    document.querySelectorAll(".gm-highlight").forEach((item) => {
-      item.classList.remove("gm-highlight");
+    document.querySelectorAll(".tt-highlight").forEach((item) => {
+      item.classList.remove("tt-highlight");
       const element = item as HTMLElement;
       element.style.position = "";
       element.style.zIndex = "";

@@ -1,6 +1,6 @@
 import { Instance, createPopper } from "@popperjs/core";
 
-export class GuideMeElement extends HTMLElement {
+export class TooltipTourElement extends HTMLElement {
   private _tooltip: HTMLElement;
   private mainSlot: HTMLSlotElement;
   private overlay: HTMLElement;
